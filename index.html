@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+			list-style: none;
+		}
+
+		#div1 {
+			position: relative;
+			margin: 120px auto;
+			width: 1024px;
+			height: 666px;
+			overflow: hidden;
+		}
+
+		#div1 ul {
+			position: absolute;
+			left: 0px;
+		}
+
+		#div1 ul li {
+			float: left;
+		}
+		.moveButton{
+			width: 50px;
+			height: 100px;
+			position: absolute;
+			line-height: 100px;
+			text-align: center;
+			background: #666;
+			color: aliceblue;
+		}
+		.moveButton:hover{
+			background: #333;
+		}
+		.btnl{
+			left: 0px;
+			top: 383px;
+		}
+		.btnr{
+			right: 0px;
+			top: 383px;
+		}
+		a {
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			display: block;
+			float: left;
+			position: relative;
+			top: 52px;
+    		left: 920px;
+			background: white;
+			margin-right: 5px;
+		}
+		img{
+			width: 1024px;
+			height: 100%;
+		}
+		.active {
+			background: #333;
+		}
+	</style>
+	<script>
+		window.onload = function () {
+			var Odiv = document.getElementById('div1');
+			var oUl = Odiv.getElementsByTagName('ul')[0];
+			var oLi = oUl.getElementsByTagName('li');
+			var A = Odiv.getElementsByTagName('a');
+
+			var oBtnL = document.getElementById('BtnL');
+			var oBtnR = document.getElementById('BtnR');
+
+			var now = 0;
+			var now2 = 0;
+			var timer;
+			oUl.style.transition = "left .5s linear";
+			for (var i = 0; i < A.length; i++) {
+				oUl.style.width = oLi.length * oLi[0].offsetWidth + 'px';
+				A[i].index = i;
+				A[i].onclick = function () {
+					oUl.style.transition = "left .5s linear";
+					for (var i = 0; i < A.length; i++) {
+						A[i].className = '';
+					}
+					this.className = 'active';
+					oUl.style.left = -this.index * oLi[0].offsetWidth + 'px';
+					now = this.index;
+				};
+			}
+
+			oBtnL.onclick = function () {
+				oUl.style.transition = "left .5s linear";
+				if (now == 0) {
+					oLi[oLi.length - 1].style.position = "relative"
+					oLi[oLi.length - 1].style.left = -oLi.length * oLi[0].offsetWidth + 'px';
+					oUl.style.left = oLi[0].offsetWidth + 'px';
+					setTimeout(() => {
+						oUl.style.transition = "left 0s linear";
+						oLi[oLi.length - 1].style.position = ""
+						oUl.style.left = -(oLi.length - 1) * oLi[0].offsetWidth + 'px';
+					}, 500);
+					now = oLi.length - 1;
+				} else {
+					now--;
+					oUl.style.left = -now * oLi[0].offsetWidth + 'px';
+				}
+
+				for (var i = 0; i < A.length; i++) {
+					A[i].className = '';
+				}
+				A[now].className = 'active';
+			};
+
+			oBtnR.onclick = function () {
+				oUl.style.transition = "left .5s linear";
+				if (now == oLi.length - 1) {
+					oLi[0].style.position = "relative"
+					oLi[0].style.left = oLi.length * oLi[0].offsetWidth + 'px';
+					oUl.style.left = -oLi.length * oLi[0].offsetWidth + 'px';
+					setTimeout(() => {
+						oUl.style.transition = "left 0s linear";
+						oLi[0].style.position = ""
+						oUl.style.left = 0 + 'px';
+					}, 500);
+					now = 0;
+				} else {
+					now++;
+					oUl.style.left = -now * oLi[0].offsetWidth + 'px';
+				}
+				for (var i = 0; i < A.length; i++) {
+					A[i].className = '';
+				}
+				A[now].className = 'active';
+
+			};
+			timer = setInterval(() => {
+				oBtnR.click()
+			}, 2000);
+			Odiv.addEventListener("mousemove", ()=>{
+				clearInterval(timer)
+			})
+			
+		}
+	</script>
+</head>
+
+<body>
+	<div id="div1">
+		<ul>
+			<li><img src="1.jpg"></li>
+			<li><img src="2.jpg"></li>
+			<li><img src="3.jpg"></li>
+			<li><img src="4.jpg"></li>
+			<li><img src="5.jpg"></li>
+		</ul>
+		<a href="javascript:;" class="active"></a>
+		<a href="javascript:;"></a>
+		<a href="javascript:;"></a>
+		<a href="javascript:;"></a>
+		<a href="javascript:;"></a>
+	</div>
+	<div  value="左" id="BtnL" class="moveButton btnl"><</div>
+	<div  value="右" id="BtnR" class="moveButton btnr">></div>
+</body>
+
+</html>
